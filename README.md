@@ -4,8 +4,6 @@
 
 ---
 
-## 📦 Escopo do MVP
-
 | Integrante | Matrícula |
 | :--- | :---|
 | João Marcos Silva Fernandes de Freitas | 20230052103 |
