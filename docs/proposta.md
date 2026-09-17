@@ -1,21 +1,15 @@
 # Proposta de Projeto: EloHabits
 
-**Disciplina:** DIM0510 — Processos de Software  
-**Link**: 
-
----
 
 ## 1. Visão do Produto
 
-* **Para:** Jovens adultos
-* **Que:** Têm dificuldade em manter consistência em suas rotinas (estudo, exercícios, leitura) e desistem rápido por falta de acompanhamento
-* **O EloHabits:** É uma aplicação web de rastreamento de hábitos baseada em duplas de responsabilidade
-* **Que:** Conecta duas pessoas em um compromisso diário conjunto, no qual a consistência de ambos determina o progresso
-* **Diferente de:** Aplicativos de hábitos individuais convencionais (como Notion, Habitica ou Loop)
-* **Nosso produto:** Faz a sequência (*streak*) e a vida do mascote da dupla dependerem do cumprimento das metas de ambos os parceiros até a meia-noite
+* Para estudantes e jovens adultos que tem dificuldade em manter consistência em metas diárias (estudos, leitura, exercícios) e desistem rápido por falta de acompanhamento mútuo e visibilidade do próprio progresso.
+* O **EloHabits** é um aplicativo móvel de acompanhamento de hábitos em duplas de responsabilidade que vincula dois parceiros a um mascote virtual compartilhado e consolida o histórico da dupla em um dashboard visual intuitivo com métricas de consistência. 
+* **Diferente de** Aplicativos de hábitos puramente individuais (como Habitica, Notion ou Loop Habit Tracker). 
+* **Nosso produto** condiciona a sobrevivência do mascote e o streak à disciplina mútua diária, fornecendo infográficos visuais do ritmo e taxa de sucesso da dupla ao longo do tempo.
 
 ### Hipótese de Valor
-> **Acreditamos que** estudantes universitários **vão** manter suas metas diárias por pelo menos 14 dias consecutivos **porque** a visibilidade mútua e a responsabilidade compartilhada geram cobrança social positiva, reduzindo a procrastinação.
+> **Acreditamos que** estudantes universitários **vão** manter suas metas diárias ativas por pelo menos 21 dias consecutivos **porque** o compromisso conjunto pelo mascote, somado à visualização clara de sua evolução em infográficos, reforça o senso de progresso e reduz a evasão.
 
 ---
 
@@ -27,27 +21,29 @@ O MVP foi delimitado para validar a dinâmica da dupla e o vínculo com o bichin
 | :--- | :--- |
 | Cadastro e autenticação básica (e-mail e senha) | Login social via terceiros (Google, GitHub) |
 | Criação de vínculo de dupla via código/link único | Grupos com 3 ou mais membros |
-| Cadastro de 1 hábito diário por participante | Múltiplos hábitos simultâneos por participante |
-| Check-in diário com confirmação de conclusão | Upload de foto/vídeo para comprovação da meta |
-| Mascote compartilhado com 3 estados visuais (Feliz, Faminto/Triste, Doente/Desmaiado) | Loja de acessórios, customização visual e skins do pet |
-| Cálculo de *streak* (streak cresce se ambos cumprem; pet sofre dano se um falhar) | Minigames com o mascote ou batalhas entre duplas |
+| Cadastro de 1 hábito diário por usuário | Múltiplos hábitos simultâneos por participante |
+| Check-in diário com confirmação de conclusão | Upload de foto/vídeo como prova de execução |
+| Mascote compartilhado com 3 estados (Feliz, Faminto, Desmaiado) | Widget de tela inicial do Android |
+| Regra de *streak* mútua com impacto na saúde do pet | Notificações push em tempo real via Firebase (FCM) |
+| Tela principal com status da dupla e saúde do mascote | Loja de itens cosméticos ou roupinhas para o mascote |
+| Dashboard de Hábitos com infográfico semanal/mensal de consistência da dupla | Exportação de relatórios em PDF ou integração com smartwatches |
 | Painel do dia com status de ambos os membros e vida/estado do mascote | Notificações push nativas, integração com WhatsApp/SMS |
 
 ---
 
 ## 3. Backlog Inicial e Quadro Kanban
 
-O backlog é mantido no **GitHub Projects** configurado com as cinco colunas obrigatórias do fluxo contínuo da disciplina: `Backlog`, `Sprint Backlog`, `Em progresso`, `Em revisão` e `Pronto`.
+Link para o quadro: [EloHabits Kanban](https://github.com/users/jomasii/projects/2)
 
 ### Histórias de Usuário Priorizadas
 
 | Prio | História de Usuário | Critérios de Aceitação | Estimativa | Sprint |
 | :---: | :--- | :--- | :---: | :---: |
-| **P1** | **Como usuário**, quero criar minha conta com e-mail e senha **para** ter meu cadastro individual no sistema. | 1. Validação de formato de e-mail e unicidade no banco.<br>2. Senha com no mínimo 6 caracteres com hash seguro.<br>3. Retorno de token de sessão/JWT. | 3 pts | 1 |
-| **P1** | **Como usuário autenticado**, quero gerar um código de convite e dar nome ao pet **para** iniciar a jornada em dupla. | 1. Geração de código exclusivo de 6 caracteres.<br>2. Entrada do segundo participante via código e definição do nome do pet.<br>3. Bloqueio para que nenhum dos dois entre em outra dupla simultânea. | 5 pts | 1 |
-| **P1** | **Como membro da dupla**, quero cadastrar meu hábito diário **para** definir a tarefa necessária para manter o mascote vivo. | 1. Título da meta com até 50 caracteres.<br>2. Horário-limite diário (padrão: 23:59).<br>3. Apenas 1 meta ativa por usuário por ciclo. | 2 pts | 1 |
-| **P1** | **Como participante**, quero marcar meu hábito como feito hoje **para** alimentar o pet e avançar o streak da dupla. | 1. Check-in permitido exclusivamente para a data corrente.<br>2. Atualização atômica do status individual.<br>3. Se ambos concluírem no dia, pet fica "Feliz" e soma +1 ao streak; se virar o dia sem conclusão mútua, pet muda para "Faminto/Desmaiado" e streak zera. | 5 pts | 2 |
-| **P2** | **Como membro da dupla**, quero visualizar o painel diário **para** acompanhar o status do meu parceiro e a vida do mascote. | 1. Exibição do estado visual do pet (ilustração/ícone e status textual).<br>2. Sinalização em tempo real da situação de cada membro (Pendente / Concluído).<br>3. Contador visível de dias consecutivos (*streak*). | 3 pts | 2 |
+| **P1** | **Como usuário móvel**, quero criar minha conta com e-mail e senha **para** ter meu perfil individual seguro no app. | 1. Validação de formato de e-mail e senha (mínimo de 6 caracteres).<br>2. Bloqueio de e-mails duplicados.<br>3. Armazenamento seguro de token no dispositivo. | 3 pts | 1 |
+| **P1** | **Como usuário**, quero vincular minha conta à de um parceiro via código **para** criar a dupla e escolher o mascote. | 1. Geração de código de 6 caracteres com botão de cópia.<br>2. Vinculação atômica entre os dois usuários.<br>3. Bloqueio para impedir participação em mais de uma dupla ativa. | 5 pts | 1 |
+| **P1** | **Como usuário**, quero marcar meu hábito como feito hoje **para** alimentar o mascote e somar pontos ao streak da dupla. | 1. Check-in ativo apenas na data corrente.<br>2. Atualização imediata do status individual para "Concluído".<br>3. Se ambos marcarem até 23:59, pet fica "Feliz" e soma +1 ao streak; caso contrário, pet adoece e streak zera. | 5 pts | 2 |
+| **P2** | **Como participante**, quero visualizar na tela principal o mascote e a situação do meu parceiro **para** saber se preciso cobrá-lo. | 1. Exibição da ilustração do pet de acordo com o estado.<br>2. Indicador claro de status de ambos os membros (Pendente / Concluído).<br>3. Exibição em destaque do contador de dias consecutivos (*streak*). | 3 pts | 2 |
+| **P3** | **Como membro da dupla**, quero visualizar um dashboard com infográficos de desempenho **para** analisar a nossa taxa de consistência ao longo do tempo. | 1. Gráfico de calendário/mapa de calor dos últimos 14 a 30 dias mostrando dias de sucesso e falhas da dupla.<br>2. Gráfico de barras ou progresso comparativo com o total de check-ins individuais de cada parceiro.<br>3. Indicador de taxa de aproveitamento percentual do ciclo corrente. | 5 pts | **3** |
 
 ---
 
@@ -74,7 +70,7 @@ O backlog é mantido no **GitHub Projects** configurado com as cinco colunas obr
 * **Acompanhamento Pessoal (*Daily Log*):** Registro breve no início do turno de trabalho em uma issue dedicada de progresso da sprint: *(1. O que foi implementado; 2. Próxima etapa imediata; 3. Dificuldades técnicas encontradas)*.
 * **Revisão e Retrospectiva (*Self-Review & Retrospective*):** Sexta-feira final (40 min). Teste de usabilidade no dispositivo Android físico ou emulador, análise de métricas de fluxo do GitHub Projects (Throughput e Cycle Time) e registro de planos de melhoria.
 
-### 5.2. Definição de Pronto (*Definition of Done - DoD*)
+### 5.2. Definição de Pronto
 Um item só é considerado **Pronto** se cumprir todos os requisitos:
 1. Critérios de aceitação da história validados na interface mobile.
 2. Regras de negócio essenciais (estados do pet, check-in e cálculo do streak) cobertas por testes automatizados unitários/integração.
@@ -106,3 +102,9 @@ Ajustados para evitar troca excessiva de contexto em desenvolvimento solo:
 | Nome Completo | Matrícula | E-mail | Papel Principal |
 | :--- | :---: | :--- | :--- |
 | João Marcos Silva Fernandes de Freitas | 20230052103| jomasii2@gmail.com | Desenvolvedor & Gestor de Processo |
+
+## 7. Informações Adicionais
+
+* **Coorte de apresentação:** B
+* **Integração com outras Matérias:** N/A
+* **Link do quadro no GitHub Projects:** [EloHabits Kanban](https://github.com/users/jomasii/projects/2)
