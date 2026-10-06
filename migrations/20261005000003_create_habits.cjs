@@ -3,6 +3,7 @@ exports.up = (knex) =>
     t.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
     t.uuid("usuario_id").notNullable().unique().references("id").inTable("users"); // MVP: 1 hábito por usuário
     t.uuid("pair_id").notNullable().references("id").inTable("pairs");
+    t.unique(["id", "usuario_id"]); // alvo da FK composta de checkins
     t.text("descricao").notNullable();
     t.timestamp("criado_em", { useTz: true }).notNullable().defaultTo(knex.fn.now());
   });

@@ -10,12 +10,12 @@ export interface JwtOptions {
 }
 
 export function signToken(userId: string, { secret, expiresIn }: JwtOptions): string {
-  return jwt.sign({}, secret, { subject: userId, expiresIn: expiresIn as jwt.SignOptions["expiresIn"] });
+  return jwt.sign({}, secret, { algorithm: "HS256", subject: userId, expiresIn: expiresIn as jwt.SignOptions["expiresIn"] });
 }
 
 /** Lança se o token for inválido ou expirado. */
 export function verifyToken(token: string, secret: string): TokenPayload {
-  const decoded = jwt.verify(token, secret);
+  const decoded = jwt.verify(token, secret, { algorithms: ["HS256"] });
   if (typeof decoded === "string" || typeof decoded.sub !== "string") {
     throw new Error("token sem subject");
   }
