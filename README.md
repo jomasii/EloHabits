@@ -19,3 +19,27 @@ Aplicação de gerenciamento de hábitos, desenvolvido comx para a disciplina de
 * **Coorte de apresentação:** B 
 * **Integração com outras matérias:** N/A
 * **Link do quadro no GitHub Projects:** [EloHabits Kanban](https://github.com/users/jomasii/projects/2)
+
+
+---
+
+## Como rodar
+
+```bash
+cp .env.example .env && docker compose up --build
+```
+
+Detalhes em [docs/COMO-RODAR.md](docs/COMO-RODAR.md).
+
+## Mapa do repositório
+
+| Caminho | Conteúdo |
+| :--- | :--- |
+| `src/domain`, `src/api`, `src/infra` | Código da API (Node + Fastify + TypeScript) |
+| `src/tests` | Testes unitários |
+| `migrations/` | Migrações do banco (Knex) |
+| `contratos/openapi.yaml` | Contrato da API |
+| `docs/` | Proposta, design da Sprint 0, COMO-RODAR |
+| `docs/decisoes/` | ADRs |
+| `processo/` | Acordo de processo e backlog |
+| `.github/workflows/` | CI |

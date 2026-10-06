@@ -51,11 +51,13 @@ Link para o quadro: [EloHabits Kanban](https://github.com/users/jomasii/projects
 
 * **Frontend Mobile (Android): React Native / Expo (TypeScript) ou Flutter**  
   * *Justificativa:* Permite focar na plataforma Android com alta velocidade de prototipação, componentes declarativos e facilidade para executar testes de interface e de componentes de forma desacoplada de emuladores pesados.
-* **Backend / Camada de Dados: Node.js (TypeScript) + Fastify / Express ou Firebase/Supabase**  
-  * *Justificativa:* Arquitetura leve para manipulação do estado da dupla e da máquina de estados do mascote, simplificando a escrita de testes de integração via HTTP.
-* **Banco de Dados & Modelagem: SQLite / PostgreSQL (Prisma ORM)**  
-  * *Justificativa:* Permite persistência consistente das entidades de usuário, dupla e transições diárias do pet, viabilizando bancos efêmeros em memória para execução rápida de testes locais e no CI.
-* **Testes Automatizados: Jest + React Native Testing Library (ou Flutter Test)**  
+* **Backend: Node.js 20 + TypeScript + Fastify** ([ADR-0001](decisoes/0001-stack-backend.md))
+  * *Justificativa:* Arquitetura leve para manipular o estado da dupla e do mascote, e testes de integração via HTTP simples. Uma única linguagem com o cliente TypeScript.
+* **Banco de Dados: PostgreSQL 16 com Knex (migrações e query builder)** ([ADR-0002](decisoes/0002-acesso-a-dados-knex.md))
+  * *Justificativa:* Domínio relacional (usuários, duplas, hábitos, check-ins) com restrições de unicidade no banco; sem ORM pesado.
+* **Autenticação: e-mail e senha, bcrypt, JWT** ([ADR-0003](decisoes/0003-autenticacao-jwt.md))
+* **Deploy: Docker (Dockerfile multistage + docker-compose)**
+* **Testes Automatizados: Test runner nativo do Node (backend); testes de componentes do cliente a definir**  
   * *Justificativa:* Suporta testes unitários puros da lógica de domínio (cálculo de streak, virada de data e vida do pet) e testes de renderização de componentes sem depender de emuladores Android no ambiente de CI.
 * **Integração Contínua (CI): GitHub Actions**  
   * *Justificativa:* Pipeline automatizado executado a cada push/PR para checagem de formatação/linter (ESLint), compilação estática (TypeScript) e execução da suíte de testes Jest.
