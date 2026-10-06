@@ -6,6 +6,7 @@ exports.up = (knex) =>
     // nulo até o convite ser aceito
     t.uuid("usuario_b_id").nullable().references("id").inTable("users");
     t.timestamp("criado_em", { useTz: true }).notNullable().defaultTo(knex.fn.now());
+    t.check("usuario_a_id <> usuario_b_id", [], "pairs_usuarios_distintos");
   });
 
 exports.down = (knex) => knex.schema.dropTable("pairs");

@@ -18,3 +18,9 @@ test("rejeita token expirado", () => {
   const token = signToken("user-1", { secret: "s3", expiresIn: "-1s" });
   assert.throws(() => verifyToken(token, "s3"));
 });
+
+test("rejeita token assinado com algoritmo diferente de HS256", async () => {
+  const { default: jwt } = await import("jsonwebtoken");
+  const token = jwt.sign({}, "s3", { subject: "user-1", algorithm: "HS512" });
+  assert.throws(() => verifyToken(token, "s3"));
+});
