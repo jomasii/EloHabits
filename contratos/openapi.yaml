@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: EloHabits API
+  version: 0.1.0
+  description: Contrato do núcleo do MVP. Apenas /health está implementado na Sprint 0; os demais são stubs.
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Credenciais:
+      type: object
+      required: [email, senha]
+      properties:
+        email: { type: string, format: email }
+        senha: { type: string, minLength: 6 }
+    Token:
+      type: object
+      properties:
+        token: { type: string }
+    Erro:
+      type: object
+      properties:
+        erro: { type: string }
+paths:
+  /health:
+    get:
+      summary: Verifica se a API está no ar
+      responses:
+        "200": { description: OK }
+  /auth/cadastro:
+    post:
+      summary: Cria conta (Sprint 1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Credenciais" }
+      responses:
+        "201": { description: Conta criada }
+        "409": { description: E-mail já cadastrado }
+  /auth/login:
+    post:
+      summary: Autentica e devolve JWT (Sprint 1)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Credenciais" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Token" }
+        "401": { description: Credenciais inválidas }
+  /duplas:
+    post:
+      summary: Cria dupla e gera código de convite (Sprint 1)
+      security: [{ bearer: [] }]
+      responses:
+        "201": { description: Dupla criada }
+  /duplas/aceitar:
+    post:
+      summary: Aceita convite pelo código (Sprint 1)
+      security: [{ bearer: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [codigo]
+              properties:
+                codigo: { type: string }
+      responses:
+        "200": { description: Dupla formada }
+        "404": { description: Código inexistente }
+  /habitos:
+    post:
+      summary: Cadastra o hábito diário do usuário (Sprint 2)
+      security: [{ bearer: [] }]
+      responses:
+        "201": { description: Hábito criado }
+  /checkins:
+    post:
+      summary: Faz o check-in do dia (Sprint 2)
+      security: [{ bearer: [] }]
+      responses:
+        "201": { description: Check-in registrado }
+  /duplas/status:
+    get:
+      summary: Status do dia da dupla e streak (Sprint 2)
+      security: [{ bearer: [] }]
+      responses:
+        "200": { description: OK }
