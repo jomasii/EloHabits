@@ -1,0 +1,15 @@
+# Override para desenvolvimento (hot reload e porta do banco exposta para os testes):
+#   docker compose -f compose.yaml -f compose.dev.yaml up --build
+services:
+  db:
+    ports:
+      - "5432:5432"
+  api:
+    build:
+      target: dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npm run migrate && npm run dev"
