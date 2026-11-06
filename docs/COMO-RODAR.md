@@ -3,10 +3,13 @@
 Pré-requisitos: Docker e Docker Compose.
 
 ```bash
-cp .env.example .env      # ajuste JWT_SECRET
-docker compose up --build # sobe banco, aplica migrações e inicia a API com hot reload
+docker compose up --build    # sobe banco, aplica migrações e inicia a API (sem .env)
 curl localhost:3000/health   # {"status":"ok"}
 ```
+
+Para desenvolver com hot reload: `docker compose -f compose.yaml -f compose.dev.yaml up --build`.
+Para mudar segredos ou portas, copie `.env.example` para `.env` (opcional).
+O app Expo roda fora do Docker: veja `app/` e a variável `EXPO_PUBLIC_API_URL`.
 
 ## Sem Docker (Node 20 + um PostgreSQL local)
 
@@ -32,7 +35,7 @@ npm run dev
 Os testes de rota usam Postgres. Suba só o banco e aplique as migrações:
 
 ```bash
-docker compose up -d db   # ou: docker run -p 5432:5432 -e POSTGRES_USER=elohabits -e POSTGRES_PASSWORD=elohabits -e POSTGRES_DB=elohabits postgres:16-alpine
+docker compose -f compose.yaml -f compose.dev.yaml up -d db   # ou: docker run -p 5432:5432 -e POSTGRES_USER=elohabits -e POSTGRES_PASSWORD=elohabits -e POSTGRES_DB=elohabits postgres:16-alpine
 export DATABASE_URL=postgres://elohabits:elohabits@localhost:5432/elohabits
 npm run migrate && npm test
 ```
