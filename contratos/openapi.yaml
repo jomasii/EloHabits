@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: EloHabits API
   version: 0.1.0
-  description: Contrato do núcleo do MVP. Apenas /health está implementado na Sprint 0; os demais são stubs.
+  description: Contrato do núcleo do MVP. Todas as rotas abaixo estão implementadas.
 servers:
   - url: http://localhost:3000
 components:
@@ -26,6 +26,29 @@ components:
       type: object
       properties:
         erro: { type: string }
+    Mascote:
+      type: string
+      enum: [feliz, faminto, desmaiado]
+    MembroStatus:
+      type: object
+      properties:
+        temHabito: { type: boolean }
+        concluidoHoje: { type: boolean }
+    StatusDupla:
+      type: object
+      properties:
+        dupla:
+          nullable: true
+          type: object
+          properties:
+            codigo: { type: string }
+            completa: { type: boolean }
+        streak: { type: integer }
+        mascote: { $ref: "#/components/schemas/Mascote" }
+        eu: { $ref: "#/components/schemas/MembroStatus" }
+        parceiro:
+          nullable: true
+          allOf: [{ $ref: "#/components/schemas/MembroStatus" }]
 paths:
   /health:
     get:
@@ -34,7 +57,7 @@ paths:
         "200": { description: OK }
   /auth/cadastro:
     post:
-      summary: Cria conta (Sprint 1)
+      summary: Cria conta
       requestBody:
         required: true
         content:
@@ -42,10 +65,11 @@ paths:
             schema: { $ref: "#/components/schemas/Credenciais" }
       responses:
         "201": { description: Conta criada }
+        "400": { description: E-mail inválido ou senha com menos de 6 caracteres }
         "409": { description: E-mail já cadastrado }
   /auth/login:
     post:
-      summary: Autentica e devolve JWT (Sprint 1)
+      summary: Autentica e devolve JWT
       requestBody:
         required: true
         content:
@@ -60,13 +84,22 @@ paths:
         "401": { description: Credenciais inválidas }
   /duplas:
     post:
-      summary: Cria dupla e gera código de convite (Sprint 1)
+      summary: Cria dupla e gera código de convite
       security: [{ bearer: [] }]
       responses:
-        "201": { description: Dupla criada }
+        "201":
+          description: Dupla criada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  codigo: { type: string, description: "6 caracteres A-Z0-9" }
+        "409": { description: Usuário já está em uma dupla }
   /duplas/aceitar:
     post:
-      summary: Aceita convite pelo código (Sprint 1)
+      summary: Aceita convite pelo código
       security: [{ bearer: [] }]
       requestBody:
         required: true
@@ -80,21 +113,39 @@ paths:
       responses:
         "200": { description: Dupla formada }
         "404": { description: Código inexistente }
+        "409": { description: Convite próprio, já usado ou usuário já em dupla }
   /habitos:
     post:
-      summary: Cadastra o hábito diário do usuário (Sprint 2)
+      summary: Cadastra o hábito diário do usuário
       security: [{ bearer: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [descricao]
+              properties:
+                descricao: { type: string, minLength: 1, maxLength: 50 }
       responses:
         "201": { description: Hábito criado }
+        "400": { description: Descrição vazia ou acima de 50 caracteres }
+        "409": { description: Sem dupla completa ou hábito já cadastrado }
   /checkins:
     post:
-      summary: Faz o check-in do dia (Sprint 2)
+      summary: Faz o check-in do dia
       security: [{ bearer: [] }]
       responses:
         "201": { description: Check-in registrado }
+        "200": { description: Check-in de hoje já existia }
+        "409": { description: Sem dupla completa ou sem hábito }
   /duplas/status:
     get:
-      summary: Status do dia da dupla e streak (Sprint 2)
+      summary: Status do dia da dupla e streak
       security: [{ bearer: [] }]
       responses:
-        "200": { description: OK }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatusDupla" }
