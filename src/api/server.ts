@@ -5,6 +5,7 @@ import { registrarAuth } from "./routes/auth";
 import { registrarDuplas } from "./routes/duplas";
 import { registrarHabitos } from "./routes/habitos";
 import { registrarCheckins } from "./routes/checkins";
+import { registrarStatus } from "./routes/status";
 
 export interface AppOptions {
   jwtSecret: string;
@@ -27,6 +28,7 @@ export function buildApp({ jwtSecret, jwtExpiresIn, db, agora = () => new Date()
   registrarDuplas(app, { db, jwtSecret });
   registrarHabitos(app, { db, jwtSecret });
   registrarCheckins(app, { db, jwtSecret, agora });
+  registrarStatus(app, { db, jwtSecret, agora });
 
   return app;
 }
