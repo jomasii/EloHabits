@@ -8,6 +8,19 @@ on:
 jobs:
   verificar:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: elohabits
+          POSTGRES_PASSWORD: elohabits
+          POSTGRES_DB: elohabits
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U elohabits"
+          --health-interval 3s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgres://elohabits:elohabits@localhost:5432/elohabits
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,6 +30,7 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run migrate
       - run: npm test
 
   docker:

@@ -1,11 +1,14 @@
-import { test } from "node:test";
+import { test, after } from "node:test";
 import assert from "node:assert/strict";
 import { buildApp } from "../api/server";
 import { signToken } from "../domain/auth/jwt";
+import { testDb } from "./helpers/db";
 
 process.env.NODE_ENV = "test";
 const secret = "segredo-de-teste";
-const app = buildApp({ jwtSecret: secret });
+const db = testDb();
+const app = buildApp({ jwtSecret: secret, jwtExpiresIn: "1h", db });
+after(() => db.destroy());
 
 test("GET /health responde ok", async () => {
   const res = await app.inject({ method: "GET", url: "/health" });
