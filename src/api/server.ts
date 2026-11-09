@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance } from "fastify";
 import { Knex } from "knex";
 import { authenticate } from "./auth-middleware";
 import { registrarAuth } from "./routes/auth";
+import { registrarDuplas } from "./routes/duplas";
 
 export interface AppOptions {
   jwtSecret: string;
@@ -19,6 +20,7 @@ export function buildApp({ jwtSecret, jwtExpiresIn, db }: AppOptions): FastifyIn
   }));
 
   registrarAuth(app, { db, jwtSecret, jwtExpiresIn });
+  registrarDuplas(app, { db, jwtSecret });
 
   return app;
 }
