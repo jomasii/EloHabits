@@ -15,7 +15,9 @@ export type ApiClient = ReturnType<typeof createApiClient>;
 export function createApiClient(baseUrl: string, getToken: () => Promise<string | null>) {
   async function chamar<T>(metodo: "GET" | "POST", caminho: string, corpo?: unknown): Promise<T> {
     const token = await getToken();
-    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    const headers: Record<string, string> = {};
+    // Sem corpo, o Fastify rejeita Content-Type JSON com 400 (FST_ERR_CTP_EMPTY_JSON_BODY).
+    if (corpo !== undefined) headers["Content-Type"] = "application/json";
     if (token) headers.Authorization = `Bearer ${token}`;
     let res: Response;
     try {
