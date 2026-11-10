@@ -9,7 +9,7 @@ curl localhost:3000/health   # {"status":"ok"}
 
 Para desenvolver com hot reload: `docker compose -f compose.yaml -f compose.dev.yaml up --build`.
 Para mudar segredos ou portas, copie `.env.example` para `.env` (opcional).
-O app Expo roda fora do Docker: veja `app/` e a variável `EXPO_PUBLIC_API_URL`.
+O app Expo roda fora do Docker: veja o README e a variável `EXPO_PUBLIC_API_URL` (exemplo em `app/.env.example`).
 
 ## Sem Docker (Node 20 + um PostgreSQL local)
 
