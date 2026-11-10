@@ -42,3 +42,16 @@ test("login envia e-mail e senha em JSON para /auth/login", async () => {
   expect(fetchMock.mock.calls[0][0]).toBe("http://api/auth/login");
   expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ email: "a@x.com", senha: "123456" });
 });
+
+test("POST sem corpo não envia Content-Type (Fastify rejeita JSON vazio)", async () => {
+  fetchMock.mockResolvedValue(ok(201, { id: "1", codigo: "ABC123" }));
+  await createApiClient("http://api", async () => "t").criarDupla();
+  expect(fetchMock.mock.calls[0][1].headers["Content-Type"]).toBeUndefined();
+  expect(fetchMock.mock.calls[0][1].body).toBeUndefined();
+});
+
+test("POST com corpo envia Content-Type: application/json", async () => {
+  fetchMock.mockResolvedValue(ok(200, { token: "t" }));
+  await createApiClient("http://api", async () => null).login("a@x.com", "123456");
+  expect(fetchMock.mock.calls[0][1].headers["Content-Type"]).toBe("application/json");
+});
