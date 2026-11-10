@@ -1,0 +1,41 @@
+# Sobe API + Postgres do zero: `docker compose up --build` (nenhum .env necessário).
+# Os valores abaixo são de DESENVOLVIMENTO; o JWT_SECRET precisa ter 32+ caracteres
+# e não pode começar com "troque-por", senão a imagem de produção recusa iniciar.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-elohabits}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-elohabits}
+      POSTGRES_DB: ${POSTGRES_DB:-elohabits}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-elohabits}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      target: prod
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER:-elohabits}:${POSTGRES_PASSWORD:-elohabits}@db:5432/${POSTGRES_DB:-elohabits}
+      JWT_SECRET: ${JWT_SECRET:-segredo-de-desenvolvimento-com-32-caracteres-ou-mais}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+
+volumes:
+  dbdata:
