@@ -14,7 +14,7 @@ Desenvolvedor e Gestor de Processo: João Freitas (solo).
 GitHub (repositório, Actions), GitHub Projects (quadro), Docker, Node.js/TypeScript, PostgreSQL.
 
 ## Limites de WIP
-Em progresso: 1. Em revisão: 1.
+Em progresso: 1. Em revisão: 1. O limite conta cartões e PRs abertos.
 
 ## Política das colunas
 Nomes iguais aos do quadro no GitHub Projects.
@@ -31,7 +31,8 @@ Quando uma coluna de trabalho enche, não se puxa trabalho novo: termina-se o qu
 
 ## Prática XP
 - **TDD no domínio** (`src/domain/`): o commit do teste vem antes do commit da implementação, visível no histórico do PR.
-- **Integração contínua**: todo PR roda CI; branches curtas, uma por tarefa, integradas com frequência.
+- **Integração contínua**: todo PR roda CI; branches curtas, uma por tarefa, integradas com frequência. Toda branch parte da `main` atualizada, nunca de outra branch aberta (sem PR empilhado), e é apagada ao mergear.
+- **Bloco diário de revisão** (desde 2026-11-11): horário fixo para revisar e mergear PRs com CI verde. Detalhes em `docs/fluxo-de-valor.md`.
 
 ## Definição de Pronto
 1. Critérios de aceitação da história validados.
